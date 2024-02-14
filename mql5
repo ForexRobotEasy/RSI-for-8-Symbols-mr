@@ -1,0 +1,107 @@
+
+//+------------------------------------------------------------------+
+//|                                  RSI for 8 Symbols mr           |
+//|                        Developer's site - forexroboteasy.com    |
+//|                     Developed by - Forex Robot Easy Team         |
+//+------------------------------------------------------------------+
+
+#property indicator_chart_window
+#property indicator_buffers 8
+#property indicator_color1 Green
+#property indicator_color2 Red
+#property indicator_color3 Blue
+#property indicator_color4 Pink
+#property indicator_color5 Yellow
+#property indicator_color6 Aqua
+#property indicator_color7 Lime
+#property indicator_color8 Orange
+
+// Define input parameters
+input int RSI_Period = 14;
+input ENUM_APPLIED_PRICE RSI_Price = PRICE_CLOSE;
+
+// Define indicator buffers
+double RSI_Buffer1[];
+double RSI_Buffer2[];
+double RSI_Buffer3[];
+double RSI_Buffer4[];
+double RSI_Buffer5[];
+double RSI_Buffer6[];
+double RSI_Buffer7[];
+double RSI_Buffer8[];
+
+//+------------------------------------------------------------------+
+//| Custom indicator initialization function                         |
+//+------------------------------------------------------------------+
+int OnInit()
+{
+    // Set indicator buffers
+    SetIndexBuffer(0, RSI_Buffer1);
+    SetIndexBuffer(1, RSI_Buffer2);
+    SetIndexBuffer(2, RSI_Buffer3);
+    SetIndexBuffer(3, RSI_Buffer4);
+    SetIndexBuffer(4, RSI_Buffer5);
+    SetIndexBuffer(5, RSI_Buffer6);
+    SetIndexBuffer(6, RSI_Buffer7);
+    SetIndexBuffer(7, RSI_Buffer8);
+
+    // Set indicator labels
+    SetIndexLabel(0, 'RSI Symbol 1');
+    SetIndexLabel(1, 'RSI Symbol 2');
+    SetIndexLabel(2, 'RSI Symbol 3');
+    SetIndexLabel(3, 'RSI Symbol 4');
+    SetIndexLabel(4, 'RSI Symbol 5');
+    SetIndexLabel(5, 'RSI Symbol 6');
+    SetIndexLabel(6, 'RSI Symbol 7');
+    SetIndexLabel(7, 'RSI Symbol 8');
+
+    // Set indicator style
+    SetIndexStyle(0, DRAW_LINE);
+    SetIndexStyle(1, DRAW_LINE);
+    SetIndexStyle(2, DRAW_LINE);
+    SetIndexStyle(3, DRAW_LINE);
+    SetIndexStyle(4, DRAW_LINE);
+    SetIndexStyle(5, DRAW_LINE);
+    SetIndexStyle(6, DRAW_LINE);
+    SetIndexStyle(7, DRAW_LINE);
+
+    return(INIT_SUCCEEDED);
+}
+
+//+------------------------------------------------------------------+
+//| Custom indicator iteration function                              |
+//+------------------------------------------------------------------+
+int OnCalculate(const int rates_total,
+                const int prev_calculated,
+                const datetime &time[],
+                const double &open[],
+                const double &high[],
+                const double &low[],
+                const double &close[],
+                const long &tick_volume[],
+                const long &volume[],
+                const int &spread[])
+{
+    int calculated_bars = IndicatorCounted();
+    if (calculated_bars < 1)
+        calculated_bars = 1;
+
+    int limit = rates_total - calculated_bars;
+
+    for (int i = limit; i >= 0; i--)
+    {
+        // Calculate RSI for each symbol
+        RSI_Buffer1[i] = iRSI(Symbol(), 0, RSI_Period, RSI_Price, i);
+        RSI_Buffer2[i] = iRSI(Symbol(), 1, RSI_Period, RSI_Price, i);
+        RSI_Buffer3[i] = iRSI(Symbol(), 2, RSI_Period, RSI_Price, i);
+        RSI_Buffer4[i] = iRSI(Symbol(), 3, RSI_Period, RSI_Price, i);
+        RSI_Buffer5[i] = iRSI(Symbol(), 4, RSI_Period, RSI_Price, i);
+        RSI_Buffer6[i] = iRSI(Symbol(), 5, RSI_Period, RSI_Price, i);
+        RSI_Buffer7[i] = iRSI(Symbol(), 6, RSI_Period, RSI_Price, i);
+        RSI_Buffer8[i] = iRSI(Symbol(), 7, RSI_Period, RSI_Price, i);
+    }
+
+    return(rates_total);
+}
+
+//+------------------------------------------------------------------+
